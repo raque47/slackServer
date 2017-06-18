@@ -1,0 +1,39 @@
+{
+  "name": "slack",
+  "version": "1.0.0",
+  "description": "Api for Slack clone project",
+  "main": "lib/app.js",
+  "scripts": {
+    "compile": "babel -d src/",
+    "run": "babel -d src/",
+    "watch": "npm run build -- --watch",
+    "start:server": "nodemon ./src/index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raque47/slack.git"
+  },
+  "author": "Raquel Chavarria Robles",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/raque47/slack/issues"
+  },
+  "homepage": "https://github.com/raque47/slack#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.17.2",
+    "crypto": "0.0.3",
+    "express": "^4.15.3",
+    "http": "0.0.0",
+    "jsonwebtoken": "^7.4.1",
+    "mongoose": "^4.10.6",
+    "morgan": "^1.8.2",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.2.1",
+    "passport-local": "^1.0.0",
+    "socket.io": "^2.0.3"
+  },
+  "devDependencies": {
+    "dotenv": "^4.0.0"
+  }
+}

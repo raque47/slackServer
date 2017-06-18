@@ -1,0 +1,61 @@
+
+Making calls to api from client side
+
+For authentication: url: http://localhost:3000/api/auth
+
+	Examples:
+
+	Register: url: http://localhost:3000/api/auth/register
+
+	Params to POST: email, password, firstName, lastName
+
+	{
+		"token": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OTQ1Njg5YWEzMGU2ZjlkNTQ4M2NjODciLCJmaXJzdE5hbWUiOiJSYXF1ZWwiLCJsYXN0TmFtZSI6IkNoYXZhcnJpYSIsImVtYWlsIjoicmFxdWVsY2hhdmFycmlhOTRAZ21haWwuY29tIiwiaWF0IjoxNDk3NzIwOTg2LCJleHAiOjE0OTc3MzEwNjZ9._ri0fFvYwou67u3R6ufOgjK4dKTIeqNybSNDxkKyJlA",
+		"user": {
+			"_id": "5945689aa30e6f9d5483cc87",
+			"firstName": "Raquel",
+			"lastName": "Chavarria",
+			"email": "raquelchavarria94@gmail.com"
+		}
+	}
+
+	Login:
+
+	url: http://localhost:3000/api/auth/login
+
+	Params to POST: email, password
+
+	if is a authorized user:
+	{
+		"token": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OTQ1Njg5YWEzMGU2ZjlkNTQ4M2NjODciLCJmaXJzdE5hbWUiOiJSYXF1ZWwiLCJsYXN0TmFtZSI6IkNoYXZhcnJpYSIsImVtYWlsIjoicmFxdWVsY2hhdmFycmlhOTRAZ21haWwuY29tIiwiaWF0IjoxNDk3NzIxMzEyLCJleHAiOjE0OTc3MzEzOTJ9.Dnch7P3caF1OmEKIMj36nFD2IJbj7jJHNEjlVFTK8j4",
+		"user": {
+			"_id": "5945689aa30e6f9d5483cc87",
+			"firstName": "Raquel",
+			"lastName": "Chavarria",
+			"email": "raquelchavarria94@gmail.com"
+		}
+	}
+
+	else:
+	Unauthorized  (body.data === Unauthorized)
+
+
+For getting users, chats, messages and directory of each user: http://localhost:3000/api/routes
+
+	Example:
+
+	Users: http://localhost:3000/api/routes/users
+	
+	(GET) 
+    {
+        "_id": "5945689aa30e6f9d5483cc87",
+        "updatedAt": "2017-06-17T17:36:26.819Z",
+        "createdAt": "2017-06-17T17:36:26.819Z",
+        "email": "raquelchavarria94@gmail.com",
+        "password": "$2a$05$nZaIY8W/MStMkuxoDEU26.bsF3..VjsyK/tlAMkNlcgDbam83jNlG",
+        "__v": 0,
+        "profile": {
+            "firstName": "Raquel",
+            "lastName": "Chavarria"
+        }
+    }
