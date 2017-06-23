@@ -99,15 +99,4 @@ io.sockets.on('connection', function (socket) {
     console.log(channel);
     socket.broadcast.emit('updateMessagesBroadcast', username, content, idReceiver, hour, channel);
   });
-
-
-  //  socket.emit('sendBroadcast',channel, username, content, idReceiver,hour,channel);
-  //                     //actualizar la pantalla y los mensajes
-
-
-  // socket.on('sendchannel', (idMessageFor, data, time, idMessageFrom,username,idMessage) => {
-  //     socket.broadcast.emit('updatechannel', idMessageFor, data, time, idMessageFrom,username,idMessage);
-  //   });
-
-
 });
