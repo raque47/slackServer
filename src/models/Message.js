@@ -4,17 +4,14 @@ const messageSchema = new mongoose.Schema({
     content:{
         type: String,
     },
-    idEmisor:{
+    idTransmitter:{
         type: String,
     },
-    receptors:{
-        type: Array,
+    idReceiver:{
+        type: String,
     },
     hour:{
         type: String,
-    },
-    date:{
-        type: Date,
     }
 });
 

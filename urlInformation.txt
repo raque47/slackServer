@@ -59,3 +59,14 @@ For getting users, chats, messages and directory of each user: http://localhost:
             "lastName": "Chavarria"
         }
     }
+
+	
+	Datos de prueba:
+	
+	raquelchavarria94@gmail.com
+	123test
+	
+	tommy24@gmail.com
+	123
+	
+	

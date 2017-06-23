@@ -1,7 +1,7 @@
 const userController = require('../src/controllers/userController');
-const chatController  =  require('../src/controllers/chatController');
-const directoryController  =  require('../src/controllers/directoryController');
-const messageController  =  require('../src/controllers/messageController');
+const chatController = require('../src/controllers/chatController');
+const directoryController = require('../src/controllers/directoryController');
+const messageController = require('../src/controllers/messageController');
 const authenticationController = require('./controllers/authenticationController');
 const express = require('express');
 const passportService = require('../config/passport');
@@ -19,7 +19,7 @@ function routes(app) {
     const router = express.Router();
 
     apiRoutes.use('/routes', router);
-    apiRoutes.use('/auth', authRoutes); 
+    apiRoutes.use('/auth', authRoutes);
 
     //auth routes
     authRoutes.post('/register', authenticationController.register);
@@ -27,8 +27,12 @@ function routes(app) {
     // router routes
     router.get('/chats', chatController.getChats);
     router.get('/directorys', directoryController.getDirectorys);
+
     router.get('/messages', messageController.getMessages);
-    router.get('/messages/:_id', messageController.getMessageById);
+    router.post('/messages', messageController.postMessage);
+    router.put('/messages/:id', messageController.putMessage);
+    //router.get('/messages/:_id', messageController.getMessageById);
+
     router.get('/users', userController.getUsers);
     router.get('/users/:_id', userController.getUsereById);
 

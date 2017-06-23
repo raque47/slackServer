@@ -13,10 +13,10 @@ const router = require('./router');
 mongoose.Promise = global.Promise;
 require('dotenv').config();
 mongoose.connect(config.database)
-.then(
+  .then(
   () => console.log('Connected to MongoDB'),
   error => console.log('Error in connection to MongoDB')
-);
+  );
 
 //SERVER
 server.listen(config.port);
@@ -26,11 +26,11 @@ console.log('Your server is running on port ' + config.port + '.');
 app.use(morgan('dev')); // Log requests to API using morgan
 // Enable CORS from client-side
 app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials");
-    res.header("Access-Control-Allow-Credentials", "true");
-    next();
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials");
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
 });
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -39,25 +39,75 @@ app.use(bodyParser.json());
 router(app);
 
 //SOKETS
+var connections = [];
 var usernames = {};
-io.sockets.on('connection', function (socket) {
-  console.log('Alguien se ha conectado!! Socke id: ' + socket.id);
 
-  // when the client emits 'sendchat', this listens and executes
-  socket.on('sendchat', (data) => {
-    console.log('chat (data): ',data);
-    // we tell the client to execute 'updatechat' with 2 parameters
-    io.sockets.emit('updatechat', socket.username, data);
-  });
+io.sockets.on('connection', function (socket) {
 
   // when the user disconnects
-  socket.on('disconnect', function(){
-    // remove the username from global usernames list
+  socket.once('disconnect', function () {
     delete usernames[socket.username];
-    // update list of users in chat, client-side
-    io.sockets.emit('updateusers', usernames);
-    // echo globally that this client has left
-    socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
-    //socket.leave(socket.room);
+    io.sockets.emit('updateUsers', usernames);
+    //socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
   });
+
+  console.log('Alguien se ha conectado!! Socket id: ' + socket.id);
+  //Somebody has been logged or connect
+  socket.on('connected', (name) => {
+    console.log('Connections antes ' + connections);
+    connections[name] = socket.id;
+    console.log('Connections despues ' + connections);
+  });
+
+  // when the client emits 'sendMessage', this listens and executes
+  // name: id de usuario que lo envio,  connections[name]: id del socket de esa persona
+
+  //username, content, idReceiver, hour);
+  socket.on('sendMessage', (name, content, idReceiver, hour) => {
+    //console.log('id', name, connections[name]);
+    //console.log('socket.username: ', socket.username);
+    var otherSocket = connections[idReceiver];
+    var mySocket = connections[name];
+    console.log('id emisor', name);
+    console.log('id receptor', idReceiver);
+    console.log('socket del otro ', otherSocket);
+    console.log('mi socket ', mySocket);
+    //io.to(otherSocket).emit('updateMessages',socket.username , content,idReceiver, hour);
+    //io.to(mySocket).emit('updateMessages',socket.username , content,idReceiver, hour);
+    socket.to(otherSocket).emit('updateMessages', name, content, idReceiver, hour);
+  });
+  // when the client emits 'addUser', this listens and executes
+  socket.on('addUser', function (username) {
+    socket.username = username;
+    usernames['username'] = username;
+    console.log('Estoy en addUser, usernames vale: ', usernames);
+    io.sockets.emit('updateusers', usernames);
+  });
+  //rooms
+  socket.on('subscribe', (room) => {
+    console.log('joining room', room);
+    socket.join("General");
+  })
+
+  socket.on('unsubscribe', function (room) {
+    console.log('leaving room', room);
+    socket.leave(room);
+  })
+
+  socket.on('sendBroadcast', (username, content, idReceiver, hour, channel) => {
+    console.log('broadcast from server, channel:');
+    console.log(channel);
+    socket.broadcast.emit('updateMessagesBroadcast', username, content, idReceiver, hour, channel);
+  });
+
+
+  //  socket.emit('sendBroadcast',channel, username, content, idReceiver,hour,channel);
+  //                     //actualizar la pantalla y los mensajes
+
+
+  // socket.on('sendchannel', (idMessageFor, data, time, idMessageFrom,username,idMessage) => {
+  //     socket.broadcast.emit('updatechannel', idMessageFor, data, time, idMessageFrom,username,idMessage);
+  //   });
+
+
 });
