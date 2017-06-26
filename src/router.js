@@ -1,6 +1,4 @@
 const userController = require('../src/controllers/userController');
-const chatController = require('../src/controllers/chatController');
-const directoryController = require('../src/controllers/directoryController');
 const messageController = require('../src/controllers/messageController');
 const authenticationController = require('./controllers/authenticationController');
 const express = require('express');
@@ -24,10 +22,8 @@ function routes(app) {
     //auth routes
     authRoutes.post('/register', authenticationController.register);
     authRoutes.post('/login', requireLogin, authenticationController.login);
-    // router routes
-    router.get('/chats', chatController.getChats);
-    router.get('/directorys', directoryController.getDirectorys);
 
+    // router routes
     router.get('/messages', messageController.getMessages);
     router.post('/messages', messageController.postMessage);
     router.put('/messages/:id', messageController.putMessage);
