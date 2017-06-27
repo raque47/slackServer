@@ -12,7 +12,8 @@ const router = require('./router');
 //CONNECT SERVER WITH DATABSE--Database Connection
 mongoose.Promise = global.Promise;
 require('dotenv').config();
-mongoose.connect('mongodb://raque47:Tommy-457@ds137882.mlab.com:37882/slack_clone')
+//mongoose.connect('mongodb://raque47:Tommy-457@ds137882.mlab.com:37882/slack_clone')
+mongoose.connect('mongodb://localhost:27017/Slack')
   .then(
   () => console.log('Connected to MongoDB'),
   error => console.log('Error in connection to MongoDB')
