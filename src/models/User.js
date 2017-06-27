@@ -17,9 +17,6 @@ const UserSchema = new Schema({
         firstName: { type: String },
         lastName: { type: String }
     },
-    photo:{
-        type: String
-    },
     resetPasswordToken: { type: String },
     resetPasswordExpires: { type: Date }
 },

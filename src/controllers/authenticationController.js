@@ -18,8 +18,9 @@ function setUserInfo(request) {
     lastName: request.profile.lastName,
     email: request.email  };
 }
-
-// Login 
+  //========================================
+// Login Route
+//========================================
 exports.login = function(req, res, next) {
   let userInfo = setUserInfo(req.user);
   res.status(200).json({
@@ -29,8 +30,9 @@ exports.login = function(req, res, next) {
 }
 
 
-
-// Registration
+//========================================
+// Registration Route
+//========================================
 exports.register = function(req, res, next) {  
   // Check for registration errors
   const email = req.body.email;
@@ -70,7 +72,14 @@ exports.register = function(req, res, next) {
 
       user.save(function(err, user) {
         if (err) { return next(err); }
+
+        // Subscribe member to Mailchimp list
+        // mailchimp.subscribeToNewsletter(user.email);
+
+        // Respond with JWT if user was created
+
         let userInfo = setUserInfo(user);
+
         res.status(201).json({
           token: 'JWT ' + generateToken(userInfo),
           user: userInfo
